@@ -8,7 +8,7 @@ from hs_test_task.custom_settings import REFERRAL_CODE_LENGTH, AUTH_CODE_LENGTH
 class AuthCodeService:
     def __init__(self):
         self.auth_code = self.generate_code()
-        self.auth_code_sending_status = None
+        self.auth_code_sending_status_code = None
 
     @staticmethod
     def generate_code(length=AUTH_CODE_LENGTH):
@@ -21,8 +21,8 @@ class AuthCodeService:
         """Mock sending the provided code to the provided phone number."""
         time.sleep(random.uniform(1, 2))
         print(f'Sent code {self.auth_code} to {phone_number}')
-        self.auth_code_sending_status = 'success'
-        return self.auth_code_sending_status
+        self.auth_code_sending_status_code = 200
+        return self.auth_code_sending_status_code
 
 
 class ReferralCodeService:

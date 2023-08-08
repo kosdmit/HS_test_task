@@ -1,15 +1,12 @@
 from datetime import datetime, timedelta
 
-from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render
-from django.views import View
 from django.views.generic import TemplateView
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from api.forms import LoginForm, ReferrerCodeForm
-from api.services import AuthCodeService, ReferralCodeService
+from api.services import AuthCodeService
 from hs_test_task.custom_settings import AUTH_CODE_ACTIVITY_TIME, REFERRAL_CODE_LENGTH, AUTH_ATTEMPTS_COUNT
 
 from api.models import Customer
@@ -32,7 +29,7 @@ class AuthenticationView(APIView):
         phone_number = request.session['phone_number']
         expire_date = request.session['auth_code_expiry_date']
 
-        if request.session['auth_attempt_count'] > AUTH_ATTEMPTS_COUNT:
+        if request.session['auth_attempts_count'] == AUTH_ATTEMPTS_COUNT:
             return Response({'error': 'Exceeded the number of failed auth attempts'},
                             status=status.HTTP_400_BAD_REQUEST)
 
@@ -64,10 +61,10 @@ class AuthenticationView(APIView):
         request.session['auth_code_expiry_date'] = auth_code_expiry_date.timestamp()
         request.session['auth_attempts_count'] = 0
 
-        auth_code_service.send_code(phone_number=phone_number)
+        status_code = auth_code_service.send_code(phone_number=phone_number)
         return Response(
-            {'auth_code_sending_status': auth_code_service.auth_code_sending_status},
-            status=status.HTTP_200_OK)
+            {'auth_code_sending_status': 'success' if status_code == 200 else 'failure'},
+            status=auth_code_service.auth_code_sending_status_code)
 
 
 class ProfileView(APIView):
@@ -134,14 +131,3 @@ class MainView(TemplateView):
         context['referrer_code_form'] = ReferrerCodeForm()
 
         return context
-
-
-
-
-
-
-
-
-
-
-
