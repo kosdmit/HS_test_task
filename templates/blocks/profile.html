@@ -1,0 +1,29 @@
+<div class="container col-xl-10 col-xxl-8 px-4 py-5" style="display: none" id="profile-block">
+    <div class="row align-items-center g-lg-5 py-5">
+      <div class="col-lg-7 text-center text-lg-start">
+        <h1 class="display-4 fw-bold lh-1 text-body-emphasis mb-3">Welcome</h1>
+        <p class="col-lg-10 fs-4 m-0">Your phone: <span id="phone-number-value"></span></p>
+        <p class="col-lg-10 fs-4 m-0">Your referral code: <span id="own-referral-code-value"></span></p>
+        <p class="col-lg-10 fs-4 m-0 mt-3">Your referrals:</p>
+        <ul class="list-group col-lg-10 fs-4 m-0" id="referrals-list"></ul>
+      </div>
+      <div class="col-md-10 mx-auto col-lg-5">
+        <form class="p-4 p-md-5 border rounded-3 bg-body-tertiary" id="referral-form">
+          <div class="form-floating mb-3">
+            {{ referrer_code_form.referrer_code }}
+            <label for="floatingPassword">Referrer code</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="button" id="referral-code-submit-button">
+            Send
+          </button>
+          <hr class="my-4">
+          <small class="text-body-secondary">By clicking Submit, you agree to the terms of use.</small>
+        </form>
+        <div class="p-4 p-md-5 border rounded-3 bg-body-tertiary" id="activated-referral-code"
+             style="display: none">
+          <p>Activated referral code:</p>
+          <p id="activated-referral-code-value" class="fw-bold"></p>
+        </div>
+      </div>
+    </div>
+  </div>

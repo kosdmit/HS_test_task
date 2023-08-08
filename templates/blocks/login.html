@@ -1,0 +1,20 @@
+<div class="row mt-5" id="phone-number-input-block" style="display: none">
+  <div class="">
+    <form class="m-4 m-sm-auto col-sm-8 col-md-6 col-lg-5 col-xl-4 col-xxl-3">
+      <h1 class="h3 mb-3 fw-normal">Authorization</h1>
+
+      <div class="form-floating">
+        {{ login_form.phone_number }}
+        <label for="floatingInput">Phone</label>
+      </div>
+      <div class="form-floating mt-3" style="display: none">
+        {{ login_form.auth_code }}
+        <label for="floatingInput">Authorization code:</label>
+      </div>
+
+      <button class="btn btn-primary w-100 py-2 mt-3" type="button"
+              id="phone-number-submit-button">Submit</button>
+      <p class="mt-5 mb-3 text-body-secondary">© Hummer Systems</p>
+    </form>
+  </div>
+</div>
