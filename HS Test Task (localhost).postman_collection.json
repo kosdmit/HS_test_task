@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "63b99b19-e31f-4764-9ce1-0a89af2b0785",
-		"name": "'Hummer Systems' Test Task",
+		"name": "HS Test Task (localhost)",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "28993717"
 	},
@@ -19,10 +19,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"phone\": \"+79277535560\"\r\n}"
+					"raw": "{\r\n    \"phone_number\": \"+79277535560\"\r\n}"
 				},
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/auth/phone",
+					"raw": "http://127.0.0.1:8000/api/auth/",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -34,7 +34,7 @@
 					"path": [
 						"api",
 						"auth",
-						"phone"
+						""
 					]
 				}
 			},
@@ -53,7 +53,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"auth_code\": \"3848\"\r\n}"
+					"raw": "{\r\n    \"auth_code\": \"6349\"\r\n}"
 				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/auth/",
@@ -103,6 +103,15 @@
 			"request": {
 				"method": "POST",
 				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"referral_code\": \"7meS8A\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
 				"url": {
 					"raw": "http://127.0.0.1:8000/api/profile/",
 					"protocol": "http",
