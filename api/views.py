@@ -55,13 +55,14 @@ class AuthenticationView(APIView):
         request.session['phone_number'] = phone_number
 
         auth_code_service = AuthCodeService()
-        request.session['auth_code'] = auth_code_service.auth_code
-        auth_code_expiry_date = datetime.now() + timedelta(
-            seconds=AUTH_CODE_ACTIVITY_TIME)
-        request.session['auth_code_expiry_date'] = auth_code_expiry_date.timestamp()
-        request.session['auth_attempts_count'] = 0
-
         status_code = auth_code_service.send_code(phone_number=phone_number)
+
+        if status_code == 200:
+            request.session['auth_code'] = auth_code_service.auth_code
+            auth_code_expiry_date = datetime.now() + timedelta(seconds=AUTH_CODE_ACTIVITY_TIME)
+            request.session['auth_code_expiry_date'] = auth_code_expiry_date.timestamp()
+            request.session['auth_attempts_count'] = 0
+
         return Response(
             {'auth_code_sending_status': 'success' if status_code == 200 else 'failure'},
             status=auth_code_service.auth_code_sending_status_code)
