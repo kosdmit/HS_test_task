@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 
 from api.forms import LoginForm, ReferrerCodeForm
 from api.services import AuthCodeService, ReferralCodeService
-from hs_test_task.custom_settings import AUTH_CODE_ACTIVITY_TIME, REFERRAL_CODE_LENGTH
+from hs_test_task.custom_settings import AUTH_CODE_ACTIVITY_TIME, REFERRAL_CODE_LENGTH, AUTH_ATTEMPTS_COUNT
 
 from api.models import Customer
 
@@ -32,8 +32,13 @@ class AuthenticationView(APIView):
         phone_number = request.session['phone_number']
         expire_date = request.session['auth_code_expiry_date']
 
+        if request.session['auth_attempt_count'] > AUTH_ATTEMPTS_COUNT:
+            return Response({'error': 'Exceeded the number of failed auth attempts'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         if expire_date < datetime.now().timestamp():
-            return Response({'error': 'Auth code is expired'})
+            return Response({'error': 'Auth code is expired'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
         if request.session['auth_code'] == received_code:
             try:
@@ -45,6 +50,7 @@ class AuthenticationView(APIView):
             return Response({'auth_status': 'success'},
                             status=status.HTTP_200_OK)
         else:
+            request.session['auth_attempts_count'] += 1
             return Response({'auth_status': 'failure'},
                             status=status.HTTP_403_FORBIDDEN)
 
@@ -55,8 +61,8 @@ class AuthenticationView(APIView):
         request.session['auth_code'] = auth_code_service.auth_code
         auth_code_expiry_date = datetime.now() + timedelta(
             seconds=AUTH_CODE_ACTIVITY_TIME)
-        request.session[
-            'auth_code_expiry_date'] = auth_code_expiry_date.timestamp()
+        request.session['auth_code_expiry_date'] = auth_code_expiry_date.timestamp()
+        request.session['auth_attempts_count'] = 0
 
         auth_code_service.send_code(phone_number=phone_number)
         return Response(
